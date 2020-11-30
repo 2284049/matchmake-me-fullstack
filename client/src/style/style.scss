@@ -1,0 +1,84 @@
+.background-image {
+   /* https://css-tricks.com/perfect-full-page-background-image/ */
+   background: url("../img/backgroundimage.jpg") no-repeat center center fixed;
+   background-size: cover;
+   min-height: 100vh;
+   opacity: 0.9;
+}
+
+h1 {
+   @include media-breakpoint-only(xs) {
+      font-size: $font-size-base * 2;
+      margin-top: 8px;
+   }
+   @include media-breakpoint-only(sm) {
+      font-size: $font-size-base * 2.7;
+      margin-top: 10px;
+   }
+   @include media-breakpoint-only(md) {
+      font-size: $font-size-base * 2.9;
+      margin-top: 10px;
+   }
+}
+
+.logo-image {
+   @include media-breakpoint-only(xs) {
+      width: 45px;
+      margin-right: 5px;
+   }
+   @include media-breakpoint-only(sm) {
+      width: 50px;
+      margin-right: 5px;
+   }
+   @include media-breakpoint-only(md) {
+      width: 55px;
+      margin-right: 5px;
+   }
+}
+
+.schedule-button {
+   position: fixed;
+   top: 98px;
+   right: 5px;
+   @include media-breakpoint-only(sm) {
+      right: 35px;
+   }
+   @include media-breakpoint-only(md) {
+      right: 120px;
+   }
+   @include media-breakpoint-only(lg) {
+      right: 230px;
+   }
+   @include media-breakpoint-only(xl) {
+      right: 325px;
+   }
+}
+.text-brand {
+   font-family: $font-family-brand;
+}
+
+label,
+input {
+   cursor: pointer;
+}
+.small-input-font {
+   font-size: $font-size-base * 0.8;
+}
+p {
+   font-size: $font-size-lg;
+}
+
+.p-large {
+   font-size: $font-size-base * 1.5;
+}
+.p-muted {
+   font-size: $font-size-base;
+}
+
+.btn-link {
+   font-weight: $font-weight-bold;
+}
+.likert-radio {
+   opacity: 1;
+   position: relative;
+}

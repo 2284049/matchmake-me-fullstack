@@ -1,0 +1,9 @@
+const actions = {
+   UPDATE_CURRENT_USER: "UPDATE_CURRENT_USER",
+   STORE_MATCHES: "STORE_MATCHES",
+   STORE_SELECTED_MATCH: "STORE_SELECTED_MATCH",
+};
+
+export default actions;
+
+//
