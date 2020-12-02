@@ -11,9 +11,7 @@ import actions from "../../store/actions";
 class Matches extends React.Component {
    componentDidMount() {
       axios
-         .get(
-            "https://raw.githubusercontent.com/2284049/matchmake-me-mpa/main/src/mock-data/matchesdata.json"
-         )
+         .get("http://localhost:3046/api/v1/matches")
          .then((res) => {
             // handle success
             console.log(res);
