@@ -1,6 +1,5 @@
 import React from "react";
 import classnames from "classnames";
-import hash from "object-hash";
 import loginIcon from "../../icons/account-login.svg";
 import { v4 as getUuid } from "uuid";
 import { withRouter } from "react-router-dom";
@@ -65,7 +64,7 @@ class LogIn extends React.Component {
          const user = {
             id: getUuid(),
             email: emailInput,
-            password: hash(passwordInput),
+            password: passwordInput,
             loggedInAt: Date.now(),
          };
          console.log(user);
