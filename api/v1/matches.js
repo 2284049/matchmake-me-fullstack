@@ -10,6 +10,7 @@ const selectAllUsers = require("../../queries/selectAllUsers");
 // @access      Public
 router.get("/", (req, res) => {
    console.log(req.query);
+
    //    const { userId, searchTerm, order } = req.query;
    //    let constructedSearchTerm;
    //    if (searchTerm === "" || searchTerm === undefined) {
