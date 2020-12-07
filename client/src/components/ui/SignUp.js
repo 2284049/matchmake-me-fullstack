@@ -41,7 +41,6 @@ class SignUp extends React.Component {
          createdAt: Date.now(),
          verify_photo_url: "replace",
       };
-      console.log("Created user object for POST: ", user);
       // post to API
       axios
          .post("/api/v1/users", user)
