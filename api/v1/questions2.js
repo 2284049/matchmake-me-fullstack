@@ -1,4 +1,4 @@
-// The questions resource
+// The questions resource OPTION 2 w/forEach, find, & concat
 
 const express = require("express");
 const router = express.Router();
@@ -23,28 +23,34 @@ router.get("/", (req, res) => {
    //    /* https://www.npmjs.com/package/mysql#escaping-query-values */
    db.query(selectAllQuestionsAndAnswerChoices)
       .then((questions) => {
-         const questionsAndAnswers = toSafeParse(toJson(questions));
-         const camelCasedQuestionsAndAnswers = questionsAndAnswers.map(
-            (question) => {
+         const jsonParsedQuestions = toSafeParse(toJson(questions));
+         // jsonParsedQuestions = ALL QUERY RESULTS
+         // Multiple objects for each question; one object for every answer choice
+         const camelCasedQuestionsAndAnswers = jsonParsedQuestions.map(
+            (jsonParsedQuestion) => {
                return {
-                  id: question.question_id,
-                  title: question.question_title,
-                  type: question.question_type,
-                  limit: question.question_limit,
+                  id: jsonParsedQuestion.question_id,
+                  title: jsonParsedQuestion.question_title,
+                  type: jsonParsedQuestion.question_type,
+                  limit: jsonParsedQuestion.question_limit,
                   answers: [],
-                  selectedAnswerIds: [], // get from user query
                };
             }
          );
          const uniqQuestions = uniqBy(camelCasedQuestionsAndAnswers, `id`);
+         // Now we don't have any questions repeating,
+         // and only have ONE object for each question
+         // but we lost all of our answer choices
 
-         questionsAndAnswers.forEach((questionAndAnswer) => {
-            const question = uniqQuestions.find((question) => {
-               return question.id === questionAndAnswer.question_id;
+         // GET OUR ANSWER CHOICES
+         jsonParsedQuestions.forEach((jsonParsedQuestion) => {
+            // First, we are
+            const question = uniqQuestions.find((uniqQuestion) => {
+               return uniqQuestion.id === jsonParsedQuestion.question_id;
             });
             question.answers = question.answers.concat({
-               id: questionAndAnswer.answer_id,
-               text: questionAndAnswer.answer_text,
+               id: jsonParsedQuestion.answer_id,
+               text: jsonParsedQuestion.answer_text,
             });
          });
          console.log(uniqQuestions);

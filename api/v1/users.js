@@ -144,7 +144,7 @@ router.get("/", (req, res) => {
             // camelCasedUsers gives us an object for EVERY SELECTED ANSWER
             // so multiple objects for each user
             return {
-               id: user.user_id,
+               userId: user.user_id,
                username: user.username,
                firstName: user.first_name,
                lastName: user.last_name,
@@ -157,26 +157,42 @@ router.get("/", (req, res) => {
                password: user.password,
                createdAt: user.created_at,
                verifyPhotoUrl: user.verify_photo_url,
-               questionId: user.question_id,
-               questionTitle: user.question_title,
-               questionType: user.question_type,
-               questionLimit: user.question_limit,
                selectedAnswerId: user.selected_answer_id,
                selectedAnswerText: user.selected_answer_text,
             };
          });
+
+         const unfinishedUsers = uniqBy(camelCasedUsers, "userId").map(
+            (user) => {
+               return {
+                  userId: user.UserId,
+                  username: user.username,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  email: user.email,
+                  phoneCountryCode: user.phoneCountryCode,
+                  phoneAreaCode: user.phoneAreaCode,
+                  phoneLineNumber: user.phoneLineNumber,
+                  phoneExtension: user.phoneExtension,
+                  birthdate: user.birthdate,
+                  password: user.password,
+                  createdAt: user.createdAt,
+                  verifyPhotoUrl: user.verifyPhotoUrl,
+                  questions: [],
+               };
+            }
+         );
          // db.query(selectAllQuestionsAndAnswerChoices)
          //    .then((questions) => {
-         //       const questionsAndAnswers = toSafeParse(toJson(questions));
-         //       const camelCasedQuestionsAndAnswers = questionsAndAnswers.map(
-         //          (question) => {
+         //       const jsonParsedQuestions = toSafeParse(toJson(questions));
+         //       const camelCasedQuestionsAndAnswers = jsonParsedQuestions.map(
+         //          (jsonParsedQuestion) => {
          //             return {
-         //                id: question.question_id,
-         //                title: question.question_title,
-         //                type: question.question_type,
-         //                limit: question.question_limit,
+         //                id: jsonParsedQuestion.question_id,
+         //                title: jsonParsedQuestion.question_title,
+         //                type: jsonParsedQuestion.question_type,
+         //                limit: jsonParsedQuestion.question_limit,
          //                answers: [],
-         //                selectedAnswerIds: [], // get from user query
          //             };
          //          }
          //       );
@@ -185,13 +201,13 @@ router.get("/", (req, res) => {
          //          `id`
          //       );
 
-         //       questionsAndAnswers.forEach((questionAndAnswer) => {
-         //          const question = uniqQuestions.find((question) => {
-         //             return question.id === questionAndAnswer.question_id;
+         //       jsonParsedQuestions.forEach((jsonParsedQuestion) => {
+         //          const uniqQuestions = uniqQuestions.find((uniqQuestion) => {
+         //             return uniqueQuestion.id === jsonParsedQuestion.question_id;
          //          });
-         //          question.answers = question.answers.concat({
-         //             id: questionAndAnswer.answer_id,
-         //             text: questionAndAnswer.answer_text,
+         //          uniqQuestion.answers = jsonParsedQuestion.answers.concat({
+         //             id: jsonParsedQuestion.answer_id,
+         //             text: jsonParsedQuestion.answer_text,
          //          });
          //       });
          //       console.log(uniqQuestions);
