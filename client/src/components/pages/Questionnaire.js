@@ -7,13 +7,15 @@ import CheckboxQuestion from "../ui/CheckboxQuestion";
 import LikertQuestion from "../ui/LikertQuestion";
 import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
+import axios from "axios";
+import currentUser from "../../mock-data/current-user";
 
 class Questionnaire extends React.Component {
    constructor(props) {
       super(props);
-      console.log("This is props from the constructor: ", props);
       this.state = {
-         currentUserData: {},
+         currentUserData: currentUser,
+         allQuestions: [],
       };
       this.setCurrentUserData = this.setCurrentUserData.bind(this);
       this.setCurrentUserDataRadioVersion = this.setCurrentUserDataRadioVersion.bind(
@@ -23,6 +25,18 @@ class Questionnaire extends React.Component {
    }
 
    componentDidMount() {
+      axios
+         .get(`http://localhost:3046/api/v1/questions`)
+         .then((res) => {
+            // handle success
+            console.log(res.data);
+            this.setState({
+               allQuestions: res.data,
+            });
+         })
+         .catch((error) => {
+            // handle error
+         });
       this.setState({
          currentUserData: this.props.currentUser,
       });
@@ -144,8 +158,8 @@ class Questionnaire extends React.Component {
                      </div>
                   </form>
 
-                  {this.state.currentUserData.questions &&
-                     this.state.currentUserData.questions.map((question) => {
+                  {this.state.allQuestions &&
+                     this.state.allQuestions.map((question) => {
                         if (question.type === 1) {
                            return (
                               <RadioQuestion

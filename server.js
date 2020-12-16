@@ -9,6 +9,7 @@ app.use(cors());
 
 app.use("/api/v1/users", require("./api/v1/users"));
 app.use("/api/v1/matches", require("./api/v1/matches"));
+app.use("/api/v1/questions", require("./api/v1/questions"));
 
 app.use(express.static("client/build"));
 app.get("*", (req, res) => {

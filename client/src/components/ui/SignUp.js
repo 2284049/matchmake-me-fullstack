@@ -28,18 +28,18 @@ class SignUp extends React.Component {
       // create user obj
       const user = {
          id: getUuid(),
-         username: "replace",
-         first_name: "replace",
-         last_name: "replace",
+         username: "",
+         firstName: "",
+         lastName: "",
          email: emailInput,
-         phone_country_code: 0,
-         phone_area_code: 0,
-         phone_line_number: 0,
-         phone_extension: null,
+         phoneCountryCode: 0,
+         phoneAreaCode: 0,
+         phoneLineNumber: 0,
+         phoneExtension: null,
          birthdate: 0,
          password: passwordInput,
          createdAt: Date.now(),
-         verify_photo_url: "replace",
+         verifyPhotoUrl: "",
       };
       // post to API
       axios
