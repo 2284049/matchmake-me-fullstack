@@ -14,6 +14,8 @@ const getLoginEmailError = require("../../validation/getLoginEmailError");
 const getLoginPasswordError = require("../../validation/getLoginPasswordError");
 const jwt = require("jsonwebtoken");
 const selectAllUsers = require("../../queries/selectAllUsers");
+const selectAllQuestionsAndAnswerChoices = require("../../queries/selectAllQuestionsAndAnswerChoices");
+const uniqBy = require("lodash/uniqBy");
 
 // @route       POST api/v1/users
 // @desc        Create a new user
@@ -136,94 +138,139 @@ router.post("/auth", async (req, res) => {
 // @route       GET api/v1/users
 // @desc        Get user data
 // @access      Public
-router.get("/", (req, res) => {
-   console.log(req.query);
-   db.query(selectAllUsers)
-      .then((users) => {
-         const camelCasedUsers = users.map((user) => {
+router.get("/", async (req, res) => {
+   let queriedUsers = await db
+      .query(selectAllUsers)
+      .then((queriedUsers) => {
+         const camelCasedUsers = queriedUsers.map((queriedUser) => {
             // camelCasedUsers gives us an object for EVERY SELECTED ANSWER
             // so multiple objects for each user
             return {
-               userId: user.user_id,
-               username: user.username,
-               firstName: user.first_name,
-               lastName: user.last_name,
-               email: user.email,
-               phoneCountryCode: user.phone_country_code,
-               phoneAreaCode: user.phone_area_code,
-               phoneLineNumber: user.phone_line_number,
-               phoneExtension: user.phone_extension,
-               birthdate: user.birthdate,
-               password: user.password,
-               createdAt: user.created_at,
-               verifyPhotoUrl: user.verify_photo_url,
-               selectedAnswerId: user.selected_answer_id,
-               selectedAnswerText: user.selected_answer_text,
+               userId: queriedUser.user_id,
+               username: queriedUser.username,
+               firstName: queriedUser.first_name,
+               lastName: queriedUser.last_name,
+               email: queriedUser.email,
+               phoneCountryCode: queriedUser.phone_country_code,
+               phoneAreaCode: queriedUser.phone_area_code,
+               phoneLineNumber: queriedUser.phone_line_number,
+               phoneExtension: queriedUser.phone_extension,
+               birthdate: queriedUser.birthdate,
+               password: queriedUser.password,
+               createdAt: queriedUser.created_at,
+               verifyPhotoUrl: queriedUser.verify_photo_url,
+               questionId: queriedUser.question_id,
+               selectedAnswerId: queriedUser.selected_answer_id,
+               selectedAnswerText: queriedUser.selected_answer_text,
             };
          });
-
-         const unfinishedUsers = uniqBy(camelCasedUsers, "userId").map(
-            (user) => {
-               return {
-                  userId: user.UserId,
-                  username: user.username,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  email: user.email,
-                  phoneCountryCode: user.phoneCountryCode,
-                  phoneAreaCode: user.phoneAreaCode,
-                  phoneLineNumber: user.phoneLineNumber,
-                  phoneExtension: user.phoneExtension,
-                  birthdate: user.birthdate,
-                  password: user.password,
-                  createdAt: user.createdAt,
-                  verifyPhotoUrl: user.verifyPhotoUrl,
-                  questions: [],
-               };
-            }
-         );
-         // db.query(selectAllQuestionsAndAnswerChoices)
-         //    .then((questions) => {
-         //       const jsonParsedQuestions = toSafeParse(toJson(questions));
-         //       const camelCasedQuestionsAndAnswers = jsonParsedQuestions.map(
-         //          (jsonParsedQuestion) => {
-         //             return {
-         //                id: jsonParsedQuestion.question_id,
-         //                title: jsonParsedQuestion.question_title,
-         //                type: jsonParsedQuestion.question_type,
-         //                limit: jsonParsedQuestion.question_limit,
-         //                answers: [],
-         //             };
-         //          }
-         //       );
-         //       const uniqQuestions = uniqBy(
-         //          camelCasedQuestionsAndAnswers,
-         //          `id`
-         //       );
-
-         //       jsonParsedQuestions.forEach((jsonParsedQuestion) => {
-         //          const uniqQuestions = uniqQuestions.find((uniqQuestion) => {
-         //             return uniqueQuestion.id === jsonParsedQuestion.question_id;
-         //          });
-         //          uniqQuestion.answers = jsonParsedQuestion.answers.concat({
-         //             id: jsonParsedQuestion.answer_id,
-         //             text: jsonParsedQuestion.answer_text,
-         //          });
-         //       });
-         //       console.log(uniqQuestions);
-         //       res.json(uniqQuestions);
-         //    })
-         //    .catch((err) => {
-         //       console.log(err);
-         //       res.status(400).json(err);
-         //    });
-         console.log(camelCasedUsers);
-         res.json(camelCasedUsers);
+         // console.log("Here are camel cased users: ", camelCasedUsers);
+         // res.json(camelCasedUsers);
+         return camelCasedUsers;
       })
       .catch((err) => {
          console.log(err);
          res.status(400).json(err);
       });
+   // console.log("Here are queriedUsers: ", queriedUsers);
+
+   let queriedQuestions = await db
+      .query(selectAllQuestionsAndAnswerChoices)
+      .then((queriedQuestions) => {
+         const camelCasedQuestions = queriedQuestions.map((queriedQuestion) => {
+            return {
+               questionId: queriedQuestion.question_id,
+               questionTitle: queriedQuestion.question_title,
+               questionType: queriedQuestion.question_type,
+               questionLimit: queriedQuestion.question_limit,
+               answerChoiceId: queriedQuestion.answer_id,
+               answerChoiceText: queriedQuestion.answer_text,
+            };
+         });
+         // console.log(
+         //    "Here are the camel cased questions: ",
+         //    camelCasedQuestions
+         // );
+         // res.json(camelCasedQuestions);
+         return camelCasedQuestions;
+      })
+      .catch((err) => {
+         console.log(err);
+         res.status(400).json(err);
+      });
+   // console.log("Here are queriedQuestions: ", queriedQuestions);
+
+   const formattedUsers = queriedUsers.map((queriedUser) => {
+      return {
+         userId: queriedUser.userId,
+         username: queriedUser.username,
+         firstName: queriedUser.firstName,
+         lastName: queriedUser.lastName,
+         email: queriedUser.email,
+         phoneCountryCode: queriedUser.phoneCountryCode,
+         phoneAreaCode: queriedUser.phoneAreaCode,
+         phoneLineNumber: queriedUser.phoneLineNumber,
+         phoneExtension: queriedUser.phoneExtension,
+         birthdate: queriedUser.birthdate,
+         password: queriedUser.password,
+         createdAt: queriedUser.createdAt,
+         verifyPhotoUrl: queriedUser.verifyPhotoUrl,
+         questions: uniqBy(queriedQuestions, `questionId`).map(
+            (uniqQuestion) => {
+               return {
+                  questionId: uniqQuestion.questionId,
+                  questionTitle: uniqQuestion.questionTitle,
+                  questionType: uniqQuestion.questionType,
+                  questionLimit: uniqQuestion.questionLimit,
+                  answerChoices: queriedQuestions
+                     .map((queriedQuestion) => {
+                        return {
+                           answerChoiceText: queriedQuestion.answerChoiceText,
+                           answerChoiceId: queriedQuestion.answerChoiceId,
+                           questionId: queriedQuestion.questionId,
+                           // put every single answer choice for all questions under one question
+                           // add questionId temporarily to filter by it
+                        };
+                     })
+                     .filter((answerChoice) => {
+                        return (
+                           uniqQuestion.questionId === answerChoice.questionId
+                        );
+                     })
+                     .map((answerChoice) => {
+                        delete answerChoice.questionId;
+                        return answerChoice;
+                     }), // can just put answerChoices, since they're the same
+                  selectedAnswerIds: queriedUsers
+                     .map((queriedUserForAnswers) => {
+                        // we want every selected answer from every single user
+                        // for the question id
+                        return {
+                           selectedAnswerId:
+                              queriedUserForAnswers.selectedAnswerId,
+                           userId: queriedUserForAnswers.userId,
+                           questionId: queriedUserForAnswers.questionId,
+                        };
+                     })
+                     .filter((selectedAnswer) => {
+                        return (
+                           selectedAnswer.questionId ===
+                              uniqQuestion.questionId &&
+                           selectedAnswer.userId === queriedUser.userId
+                        );
+                     })
+                     .map((selectedAnswer) => {
+                        return selectedAnswer.selectedAnswerId;
+                     }),
+               };
+            }
+         ),
+      };
+   });
+
+   const uniqUsers = uniqBy(formattedUsers, `userId`);
+
+   res.json(uniqUsers);
 });
 
 module.exports = router;
