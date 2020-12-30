@@ -4,11 +4,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../db");
 const selectAllUsers = require("../../queries/selectAllUsers");
+const validateJwt = require("../../utils/validateJwt");
 
 // @route       GET api/v1/matches
 // @desc        Get all matches to show on matches page
 // @access      Public
-router.get("/", (req, res) => {
+router.get("/", validateJwt, (req, res) => {
    console.log(req.query);
 
    //    const { userId, searchTerm, order } = req.query;
