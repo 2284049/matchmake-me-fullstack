@@ -21,6 +21,10 @@ class SignUp extends React.Component {
       };
    }
 
+   // TO DO: WHEN A USER IS CREATED, POST ALL THE QUESTIONS TO THE USER.QUESTIONS AND ALL THE ANSWER CHOICES TO USER.QUESTION.ANSWERCHOICES
+   // OR
+   // CREATE THE USER AND THEN UPDATE THE USER TABLE PROPERTIES FROM THE QUESTIONNAIRE AND ADD THE ANSWER CHOICES TO THE ANSWERS TABLE
+
    async validateAndCreateUser() {
       const emailInput = document.getElementById("signup-email-input").value; // get the user email input
       const passwordInput = document.getElementById("signup-password-input")

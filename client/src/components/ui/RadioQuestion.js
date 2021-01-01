@@ -5,34 +5,39 @@ export default function RadioQuestion(props) {
       return selectedAnswerIds.includes(answerId);
    }
 
-   //  const title = props.question.title;
+   //  const questionTitle = props.question.questionTitle;
    //  const answers = props.question.answers;
-   //  const id = props.question.id;
+   //  const questionId = props.question.questionId;
    //  const selectedAnswerIds = props.question.selectedAnswerIds;
-   const { title, answers, id, selectedAnswerIds } = props.question;
+   const {
+      questionTitle,
+      answers,
+      questionId,
+      selectedAnswerIds,
+   } = props.question;
 
    return (
       <>
          <div className="row mb-7">
             <div className="col-12 mb-1">
-               <p>{title}</p>
+               <p>{questionTitle}</p>
             </div>
             {answers.map((answer) => {
                return (
                   <div
                      className="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-3"
-                     key={answer.id}
+                     key={answer.answerId}
                   >
                      <div className="custom-control custom-radio d-inline">
                         <input
                            type="radio"
-                           id={answer.id}
-                           name={id}
-                           value={answer.id}
+                           id={answer.answerId}
+                           name={questionId}
+                           value={answer.answerId}
                            className="custom-control-input"
                            checked={checkIsSelected(
                               selectedAnswerIds,
-                              answer.id
+                              answer.answerId
                            )}
                            onChange={(e) => {
                               props.setData(e);
@@ -40,9 +45,9 @@ export default function RadioQuestion(props) {
                         />
                         <label
                            className="custom-control-label"
-                           htmlFor={answer.id}
+                           htmlFor={answer.answerId}
                         >
-                           {answer.text}
+                           {answer.answerText}
                         </label>
                      </div>
                   </div>

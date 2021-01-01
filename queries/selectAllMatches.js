@@ -1,4 +1,4 @@
-const selectAllUsers = ` 
+const selectAllMatches = ` 
 SELECT 
     users.id AS user_id,
     users.username,
@@ -28,4 +28,4 @@ FROM
         INNER JOIN
     questions ON questions.id = answers.question_id
 `;
-module.exports = selectAllUsers;
+module.exports = selectAllMatches;

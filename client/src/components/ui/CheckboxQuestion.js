@@ -5,28 +5,36 @@ export default function CheckboxQuestion(props) {
       return selectedAnswerIds.includes(answerId);
    }
 
-   //  const title = props.question.title;
+   //  const questionTitle = props.question.questionTitle;
    //  const answers = props.question.answers;
-   //  const id = props.question.id;
+   //  const questionId = props.question.questionId;
    //  const selectedAnswerIds = props.question.selectedAnswerIds;
-   const { title, answers, id, selectedAnswerIds } = props.question;
+   const {
+      questionTitle,
+      answers,
+      questionId,
+      selectedAnswerIds,
+   } = props.question;
 
    return (
       <div className="row mb-7">
          <div className="col-12 mb-1">
-            <p>{title}</p>
+            <p>{questionTitle}</p>
          </div>
          {answers.map((answer) => {
             return (
-               <div className="col-xs-12 col-sm-6" key={answer.id}>
+               <div className="col-xs-12 col-sm-6" key={answer.answerId}>
                   <div className="custom-control custom-checkbox">
                      <input
                         type="checkbox"
                         className="custom-control-input"
-                        id={answer.id}
-                        checked={checkIsSelected(selectedAnswerIds, answer.id)}
-                        name={id}
-                        value={answer.id}
+                        id={answer.answerId}
+                        checked={checkIsSelected(
+                           selectedAnswerIds,
+                           answer.answerId
+                        )}
+                        name={questionId}
+                        value={answer.answerId}
                         onChange={(e) => {
                            props.setData(e);
                         }}
@@ -34,9 +42,9 @@ export default function CheckboxQuestion(props) {
 
                      <label
                         className="custom-control-label"
-                        htmlFor={answer.id}
+                        htmlFor={answer.answerId}
                      >
-                        {answer.text}
+                        {answer.answerText}
                      </label>
                   </div>
                </div>

@@ -8,13 +8,14 @@ import LikertQuestion from "../ui/LikertQuestion";
 import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import axios from "axios";
-import currentUser from "../../mock-data/current-user";
+import actions from "../../store/actions";
+// import currentUser from "../../mock-data/current-user";
 
 class Questionnaire extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         currentUserData: currentUser,
+         currentUserData: this.props.currentUser,
          allQuestions: [],
       };
       this.setCurrentUserData = this.setCurrentUserData.bind(this);
@@ -24,9 +25,15 @@ class Questionnaire extends React.Component {
       // we have to bind the parent this.setCurrentUserDate with the child this.setCurrentUserData
    }
 
-   componentDidMount() {
-      axios
-         .get(`http://localhost:3046/api/v1/questions`)
+   // GET ALL QUESTIONS AND ANSWERS
+   // IF USER IS IN THE "MATCH" RESOURCE (THEY COMPLETED THE QUESTIONNAIRE),
+   // POPULATE ANSWERS ON PAGE LOAD, UPDATE WHEN CHANGED
+   // OTHERWISE
+   // HAVE QUESTIONS BE BLANK AND POST ANSWERS
+
+   async componentDidMount() {
+      await axios
+         .get("http://localhost:3046/api/v1/questions1") // GET THE QUESTIONS AND ANSWERS TO SHOW ON THE PAGE
          .then((res) => {
             // handle success
             console.log(res.data);
@@ -37,19 +44,33 @@ class Questionnaire extends React.Component {
          .catch((error) => {
             // handle error
          });
-      this.setState({
-         currentUserData: this.props.currentUser,
-      });
+      // await axios
+      //    .get(`http://localhost:3046/api/v1/matches`)
+      //    .then((res) => {
+      //       // handle success
+      //       console.log(res);
+      //       // filter the response for the current user's object & update current user with that
+      //       this.props.dispatch({
+      //          type: actions.UPDATE_CURRENT_USER,
+      //          payload: res.data,
+      //       });
+      //    })
+      //    .catch((error) => {
+      //       // handle error
+      //    });
+      // this.setState({
+      //    currentUserData: this.props.currentUser,
+      // });
    }
 
-   // DO THIS IN CASE THE DATA DOESN'T LOAD RIGHT AWAY AND UPDATE THE STATE
-   componentDidUpdate(prevProps) {
-      if (this.props.currentUser !== prevProps.currentUser) {
-         this.setState({
-            currentUserData: this.props.currentUser,
-         });
-      }
-   }
+   // // DO THIS IN CASE THE DATA DOESN'T LOAD RIGHT AWAY AND UPDATE THE STATE
+   // componentDidUpdate(prevProps) {
+   //    if (this.props.currentUser !== prevProps.currentUser) {
+   //       this.setState({
+   //          currentUserData: this.props.currentUser,
+   //       });
+   //    }
+   // }
 
    setCurrentUserData(e) {
       console.log(
@@ -158,35 +179,35 @@ class Questionnaire extends React.Component {
                      </div>
                   </form>
 
-                  {this.state.allQuestions &&
-                     this.state.allQuestions.map((question) => {
-                        if (question.type === 1) {
-                           return (
-                              <RadioQuestion
-                                 question={question}
-                                 key={question.id}
-                                 setData={this.setCurrentUserDataRadioVersion}
-                              />
-                           );
-                        } else if (question.type === 2) {
-                           return (
-                              <CheckboxQuestion
-                                 question={question}
-                                 key={question.id}
-                                 setData={this.setCurrentUserData}
-                              />
-                           );
-                        } else if (question.type === 3) {
-                           return (
-                              <LikertQuestion
-                                 question={question}
-                                 key={question.id}
-                                 setData={this.setCurrentUserDataRadioVersion}
-                              />
-                           );
-                        }
-                        return <></>;
-                     })}
+                  {/* {this.state.allQuestions && */}
+                  {this.state.allQuestions.map((question) => {
+                     if (question.questionType === 1) {
+                        return (
+                           <RadioQuestion
+                              question={question}
+                              key={question.questionId}
+                              setData={this.setCurrentUserDataRadioVersion}
+                           />
+                        );
+                     } else if (question.questionType === 2) {
+                        return (
+                           <CheckboxQuestion
+                              question={question}
+                              key={question.questionId}
+                              setData={this.setCurrentUserData}
+                           />
+                        );
+                     } else if (question.questionType === 3) {
+                        return (
+                           <LikertQuestion
+                              question={question}
+                              key={question.questionId}
+                              setData={this.setCurrentUserDataRadioVersion}
+                           />
+                        );
+                     }
+                     return <></>;
+                  })}
 
                   <p className="mb-4">
                      Please upload an unedited non-filtered photo matching the

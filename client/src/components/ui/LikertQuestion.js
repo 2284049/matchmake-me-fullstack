@@ -5,44 +5,52 @@ export default function LikertQuestion(props) {
       return selectedAnswerIds.includes(answerId);
    }
 
-   //  const title = props.question.title;
+   //  const questionTitle = props.question.questionTitle;
    //  const answers = props.question.answers;
    //  const id = props.question.id;
    //  const selectedAnswerIds = props.question.selectedAnswerIds;
-   const { title, answers, id, selectedAnswerIds } = props.question;
+   const {
+      questionTitle,
+      answers,
+      questionId,
+      selectedAnswerIds,
+   } = props.question;
 
    return (
       <div className="row">
          <div className="col-12 mb-1">
-            <p>{title}</p>
+            <p>{questionTitle}</p>
          </div>
          {answers.map((answer) => {
             return (
-               <div className="col-3" key={answer.id}>
+               <div className="col-3" key={answer.answerId}>
                   <label
-                     htmlFor={answer.id}
+                     htmlFor={answer.answerId}
                      className="small-input-font text-center mb-7"
                   >
                      <input
                         type="radio"
-                        id={answer.id}
-                        name={id}
+                        id={answer.answerId}
+                        name={questionId}
                         className="custom-control-input likert-radio mx-auto d-block"
-                        value={answer.id}
-                        checked={checkIsSelected(selectedAnswerIds, answer.id)}
+                        value={answer.answerId}
+                        checked={checkIsSelected(
+                           selectedAnswerIds,
+                           answer.answerId
+                        )}
                         onChange={(e) => {
                            props.setData(e);
                         }}
                      />
 
-                     {answer.text}
+                     {answer.answerText}
                   </label>
                </div>
             );
          })}
          {/* {answers.map((answer) => {
             return (
-               <div className="col-3" key={answer.id + "label"}>
+               <div className="col-3" key={answer.answerId + "label"}>
                   <div className="d-flex justify-content-center mb-7">
                      
                   </div>
