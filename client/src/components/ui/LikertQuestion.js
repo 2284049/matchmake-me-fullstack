@@ -1,17 +1,17 @@
 import React from "react";
 
 export default function LikertQuestion(props) {
-   function checkIsSelected(selectedAnswerIds, answerId) {
-      return selectedAnswerIds.includes(answerId);
-   }
+   // function checkIsSelected(selectedAnswerIds, answerId) {
+   //    return selectedAnswerIds.includes(answerId);
+   // }
 
    //  const questionTitle = props.question.questionTitle;
-   //  const answers = props.question.answers;
+   //  const answerChoices = props.question.answerChoices;
    //  const id = props.question.id;
    //  const selectedAnswerIds = props.question.selectedAnswerIds;
    const {
       questionTitle,
-      answers,
+      answerChoices,
       questionId,
       selectedAnswerIds,
    } = props.question;
@@ -21,7 +21,7 @@ export default function LikertQuestion(props) {
          <div className="col-12 mb-1">
             <p>{questionTitle}</p>
          </div>
-         {answers.map((answer) => {
+         {answerChoices.map((answer) => {
             return (
                <div className="col-3" key={answer.answerId}>
                   <label
@@ -34,13 +34,13 @@ export default function LikertQuestion(props) {
                         name={questionId}
                         className="custom-control-input likert-radio mx-auto d-block"
                         value={answer.answerId}
-                        checked={checkIsSelected(
-                           selectedAnswerIds,
-                           answer.answerId
-                        )}
-                        onChange={(e) => {
-                           props.setData(e);
-                        }}
+                        // checked={checkIsSelected(
+                        //    selectedAnswerIds,
+                        //    answer.answerId
+                        // )}
+                        // onChange={(e) => {
+                        //    props.setData(e);
+                        // }}
                      />
 
                      {answer.answerText}

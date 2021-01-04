@@ -3,15 +3,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../db");
-const selectAllMatches = require("../../queries/selectAllMatches");
+const selectAllUsers = require("../../queries/selectAllUsers");
 const validateJwt = require("../../utils/validateJwt");
 
 // @route       GET api/v1/matches
 // @desc        Get all matches (users who completed questionnaire)
 // @access      Private
-router.get("/", validateJwt, async (req, res) => {
+router.get("/", async (req, res) => {
    let dbMatches = await db
-      .query(selectAllMatches)
+      .query(selectAllUsers)
       .then((dbMatches) => {
          const camelCasedMatches = dbMatches.map((dbMatch) => {
             // camelCasedMatches gives us an object for EVERY SELECTED ANSWER

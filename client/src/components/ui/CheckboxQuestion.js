@@ -1,17 +1,17 @@
 import React from "react";
 
 export default function CheckboxQuestion(props) {
-   function checkIsSelected(selectedAnswerIds, answerId) {
-      return selectedAnswerIds.includes(answerId);
-   }
+   // function checkIsSelected(selectedAnswerIds, answerId) {
+   //    return selectedAnswerIds.includes(answerId);
+   // }
 
    //  const questionTitle = props.question.questionTitle;
-   //  const answers = props.question.answers;
+   //  const answerChoices = props.question.answerChoices;
    //  const questionId = props.question.questionId;
    //  const selectedAnswerIds = props.question.selectedAnswerIds;
    const {
       questionTitle,
-      answers,
+      answerChoices,
       questionId,
       selectedAnswerIds,
    } = props.question;
@@ -21,7 +21,7 @@ export default function CheckboxQuestion(props) {
          <div className="col-12 mb-1">
             <p>{questionTitle}</p>
          </div>
-         {answers.map((answer) => {
+         {answerChoices.map((answer) => {
             return (
                <div className="col-xs-12 col-sm-6" key={answer.answerId}>
                   <div className="custom-control custom-checkbox">
@@ -29,15 +29,15 @@ export default function CheckboxQuestion(props) {
                         type="checkbox"
                         className="custom-control-input"
                         id={answer.answerId}
-                        checked={checkIsSelected(
-                           selectedAnswerIds,
-                           answer.answerId
-                        )}
+                        // checked={checkIsSelected(
+                        //    selectedAnswerIds,
+                        //    answer.answerId
+                        // )}
                         name={questionId}
                         value={answer.answerId}
-                        onChange={(e) => {
-                           props.setData(e);
-                        }}
+                        // onChange={(e) => {
+                        //    props.setData(e);
+                        // }}
                      />
 
                      <label
