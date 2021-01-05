@@ -9,6 +9,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import axios from "axios";
 import actions from "../../store/actions";
+import e from "express";
 // import currentUser from "../../mock-data/current-user";
 
 class Questionnaire extends React.Component {
@@ -24,12 +25,6 @@ class Questionnaire extends React.Component {
       // );
       // we have to bind the parent this.setCurrentUserDate with the child this.setCurrentUserData
    }
-
-   // GET ALL QUESTIONS AND ANSWERS
-   // IF USER IS IN THE "MATCH" RESOURCE (THEY COMPLETED THE QUESTIONNAIRE),
-   // POPULATE ANSWERS ON PAGE LOAD, UPDATE WHEN CHANGED
-   // OTHERWISE
-   // HAVE QUESTIONS BE BLANK AND POST ANSWERS
 
    async componentDidMount() {
       await axios
@@ -70,6 +65,31 @@ class Questionnaire extends React.Component {
    //          currentUserData: this.props.currentUser,
    //       });
    //    }
+   // }
+
+   // setUserAnswer() {
+   //    console.log("you set a user answer");
+   //    const userAnswer = {
+   //       id: getUuid(),
+   //       userId: this.props.currentUser.id,
+   //       answerId: e.target.id,
+   //    };
+   //    this.props.dispatch({
+   //       type: actions.UPDATE_CREATABLE_CARD,
+   //       payload: creatableCard,
+   //    });
+   //    console.log("here is the user answer object: ", userAnswer);
+   //    // axios request send this user object to the server
+   //    axios
+   //       .post("/api/v1/answers", answer)
+   //       .then((res) => {
+   //          console.log("user answer set: ", res);
+   //       })
+   //       .catch((err) => {
+   //          const data = err.response.data;
+   //          console.log(data);
+   //          // display error overlay & hide error overlay after 5 sec
+   //       });
    // }
 
    // setCurrentUserData(e) {

@@ -27,7 +27,7 @@ class LogIn extends React.Component {
          email: emailInput,
          password: passwordInput,
       };
-      axios // WE WANT THE API CALL TO HAPPEN AFTER THEY'VE BEEN VALIDATED
+      axios
          .post("/api/v1/users/auth", user)
          .then((res) => {
             // Set token in localstorage

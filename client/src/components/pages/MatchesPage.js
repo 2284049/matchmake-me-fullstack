@@ -11,7 +11,7 @@ import actions from "../../store/actions";
 class Matches extends React.Component {
    componentDidMount() {
       axios
-         .get("http://localhost:3046/api/v1/matches")
+         .get("http://localhost:3046/api/v1/users")
          .then((res) => {
             // handle success
             console.log(res);

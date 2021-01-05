@@ -23,9 +23,9 @@ const selectUserById = `
         users
             LEFT JOIN
         xref_user_answers ON user_id = users.id
-            INNER JOIN
+            LEFT JOIN
         answers ON answers.id = xref_user_answers.answer_id
-            INNER JOIN
+            LEFT JOIN
         questions ON questions.id = answers.question_id
     WHERE
         id = ?
