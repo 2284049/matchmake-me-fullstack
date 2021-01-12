@@ -7,7 +7,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../db");
 const insertUser = require("../../queries/insertUser");
-const selectUserById = require("../../queries/selectUserById");
+// const selectUserById = require("../../queries/selectUserById");
 const selectUserByEmail = require("../../queries/selectUserByEmail");
 const { toHash } = require("../../utils/helpers");
 const getSignUpEmailError = require("../../validation/getSignUpEmailError");
@@ -18,6 +18,7 @@ const jwt = require("jsonwebtoken");
 const selectAllUsers = require("../../queries/selectAllUsers");
 const selectAllQuestionsAndAnswerChoices = require("../../queries/selectAllQuestionsAndAnswerChoices");
 const uniqBy = require("lodash/uniqBy");
+const validateJwt = require("../../utils/validateJwt");
 
 // @route       POST api/v1/users
 // @desc        Create a new user
@@ -43,41 +44,18 @@ router.post("/", async (req, res) => {
          password: hashedPassword,
          created_at: createdAt,
          verify_photo_url: "",
-         // you can't post an array into a database
       };
-      console.log(user);
-      const userAnswer = {
-         id: "", //uuid
-         user_id: id,
-         question_id: "",
-      };
-      console.log(userAnswer);
+      // you can't post an array into a database
+
+      // console.log(user);
       db.query(insertUser, user)
-         .then(() => {
-            db.query(selectUserById, id)
-               .then((users) => {
-                  const user = users[0];
-                  res.status(200).json({
-                     userId: user.id,
-                     username: user.username,
-                     firstName: user.first_name,
-                     lastName: user.last_name,
-                     email: user.email,
-                     phoneCountryCode: user.phone_country_code,
-                     phoneAreaCode: user.phone_area_code,
-                     phoneLineNumber: user.phone_line_number,
-                     phoneExtension: user.phone_extension,
-                     birthdate: user.birthdate,
-                     password: user.password,
-                     createdAt: user.created_at,
-                     verifyPhotoUrl: user.verify_photo_url,
-                  });
-               })
-               .catch((err) => {
-                  console.log(err);
-                  dbError = `${err.code} ${err.sqlMessage}`;
-                  res.status(400).json({ dbError });
-               });
+         .then(async () => {
+            let currentUser = await getUserData(selectUserByEmail, email);
+            let user = currentUser[0];
+            const accessToken = jwt.sign(user, process.env.JWT_ACCESS_SECRET, {
+               expiresIn: "100m",
+            });
+            res.status(200).json(accessToken);
          })
          .catch((err) => {
             console.log(err);
@@ -102,8 +80,8 @@ router.post("/auth", async (req, res) => {
    console.log({ emailError, passwordError });
    let dbError = "";
    if (emailError === "" && passwordError === "") {
-      // return the user to the client
-      let user = await getUserData(selectUserByEmail, email);
+      let currentUser = await getUserData(selectUserByEmail, email);
+      let user = currentUser[0];
       const accessToken = jwt.sign(user, process.env.JWT_ACCESS_SECRET, {
          expiresIn: "100m",
       });
@@ -128,17 +106,29 @@ router.post("/auth", async (req, res) => {
 //
 // });
 
+//random
+
 // @route       GET api/v1/users
 // @desc        Get data for all users
 // @access      Public
 router.get("/", async (req, res) => {
    let userData = await getUserData(selectAllUsers, "");
+   res.status(200).json(userData);
+});
+
+// @route       GET api/v1/currentUser
+// @desc        Get data for all users
+// @access      Public
+router.get("/currentUser", validateJwt, async (req, res) => {
+   console.log("Here is the request body: ", req.body);
+   const email = req.user.email;
+   console.log("Here's the user email in the router: ", email);
+   let userData = await getUserData(selectUserByEmail, email);
    res.json(userData);
 });
 
+// FUNCTION TO GET ALL DATA, INCLUDING NESTED DATA FOR A USER/USERS
 async function getUserData(selectedQuery, email) {
-   console.log("I am in getUserData function");
-   console.log("Here is the selected query: ", selectedQuery);
    let queriedUsers = await db
       .query(selectedQuery, email)
       .then((queriedUsers) => {
@@ -156,7 +146,6 @@ async function getUserData(selectedQuery, email) {
                phoneLineNumber: queriedUser.phone_line_number,
                phoneExtension: queriedUser.phone_extension,
                birthdate: queriedUser.birthdate,
-               password: queriedUser.password,
                createdAt: queriedUser.created_at,
                verifyPhotoUrl: queriedUser.verify_photo_url,
                questionId: queriedUser.question_id,
@@ -172,7 +161,7 @@ async function getUserData(selectedQuery, email) {
          console.log(err);
          res.status(400).json(err);
       });
-   console.log("Here are queriedUsers: ", queriedUsers);
+   // console.log("Here are queriedUsers: ", queriedUsers);
 
    let queriedQuestions = await db
       .query(selectAllQuestionsAndAnswerChoices)

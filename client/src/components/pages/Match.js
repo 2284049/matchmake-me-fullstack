@@ -8,12 +8,6 @@ import CheckboxQuestion from "../ui/CheckboxQuestion";
 import LikertQuestion from "../ui/LikertQuestion";
 import { connect } from "react-redux";
 
-// // console.log(`Here is the top match data: `, selectedMatch);
-// const selectedMatchQuestions = selectedMatch.questions;
-// console.log(`Here are the top match questions: `, selectedMatchQuestions);
-// const selectedAnswers = selectedMatchQuestions.selectedAnswerIds;
-// // console.log(selectedAnswers);
-
 class MatchPage extends React.Component {
    constructor(props) {
       super(props);
@@ -131,27 +125,27 @@ class MatchPage extends React.Component {
                   </div>
 
                   {this.props.selectedMatch.questions.map((question) => {
-                     if (question.type === 1) {
+                     if (question.questionType === 1) {
                         return (
                            <RadioQuestion
                               question={question}
-                              key={question.id}
+                              key={question.questionId}
                               setData={this.setSelectedMatchDataRadioVersion}
                            />
                         );
-                     } else if (question.type === 2) {
+                     } else if (question.questionType === 2) {
                         return (
                            <CheckboxQuestion
                               question={question}
-                              key={question.id}
+                              key={question.questionId}
                               setData={this.setSelectedMatchData}
                            />
                         );
-                     } else if (question.type === 3) {
+                     } else if (question.questionType === 3) {
                         return (
                            <LikertQuestion
                               question={question}
-                              key={question.id}
+                              key={question.questionId}
                               setData={this.setSelectedMatchDataRadioVersion}
                            />
                         );

@@ -1,20 +1,21 @@
 import React from "react";
 
 export default function RadioQuestion(props) {
-   // function checkIsSelected(selectedAnswerIds, answerId) {
-   //    return selectedAnswerIds.includes(answerId);
-   // }
-
-   //  const questionTitle = props.question.questionTitle;
-   //  const answerChoices = props.question.answerChoices;
-   //  const questionId = props.question.questionId;
-   //  const selectedAnswerIds = props.question.selectedAnswerIds;
    const {
       questionTitle,
       answerChoices,
       questionId,
       selectedAnswerIds,
    } = props.question;
+
+   function checkIsSelected(selectedAnswerIds, answerChoiceId) {
+      return selectedAnswerIds.includes(answerChoiceId);
+   }
+
+   //  const questionTitle = props.question.questionTitle;
+   //  const answerChoices = props.question.answerChoices;
+   //  const questionId = props.question.questionId;
+   //  const selectedAnswerIds = props.question.selectedAnswerIds;
 
    return (
       <>
@@ -26,28 +27,28 @@ export default function RadioQuestion(props) {
                return (
                   <div
                      className="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-3"
-                     key={answer.answerId}
+                     key={answer.answerChoiceId}
                   >
                      <div className="custom-control custom-radio d-inline">
                         <input
                            type="radio"
-                           id={answer.answerId}
+                           id={answer.answerChoiceId}
                            name={questionId}
-                           value={answer.answerId}
+                           value={answer.answerChoiceId}
                            className="custom-control-input"
-                           // checked={checkIsSelected(
-                           //    selectedAnswerIds,
-                           //    answer.answerId
-                           // )}
-                           // onChange={(e) => {
-                           //    props.setData(e);
-                           // }}
+                           checked={checkIsSelected(
+                              selectedAnswerIds,
+                              answer.answerChoiceId
+                           )}
+                           onChange={(e) => {
+                              props.setData(e);
+                           }}
                         />
                         <label
                            className="custom-control-label"
-                           htmlFor={answer.answerId}
+                           htmlFor={answer.answerChoiceId}
                         >
-                           {answer.answerText}
+                           {answer.answerChoiceText}
                         </label>
                      </div>
                   </div>

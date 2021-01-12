@@ -15,7 +15,8 @@ class MatchPreview extends React.Component {
    render() {
       return (
          <>
-            <div className="col-12 col-sm-6 mb-6">
+            <div className="col-12 mb-9">
+               {/* col-sm-6 */}
                <Link
                   to="/match"
                   onClick={() => {
@@ -31,6 +32,17 @@ class MatchPreview extends React.Component {
                   />
                   <h3 className="text-center">{this.props.match.username}</h3>
                </Link>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
+               <br></br>
             </div>
          </>
       );

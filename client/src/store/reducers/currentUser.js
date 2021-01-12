@@ -4,8 +4,6 @@ import axios from "axios";
 
 export default function currentUser(currentUser = {}, action) {
    // let newCurrentUser = { ...currentUser };
-
-   console.log("This is in the reducer: ", action.payload);
    switch (action.type) {
       case actions.UPDATE_CURRENT_USER:
          if (isEmpty(action.payload)) {

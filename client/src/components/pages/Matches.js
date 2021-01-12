@@ -93,7 +93,7 @@ class Matches extends React.Component {
                         return (
                            <MatchPreview
                               match={individualmatch}
-                              key={individualmatch.id}
+                              key={individualmatch.userId}
                            />
                         );
                      })}

@@ -1,20 +1,36 @@
 import React from "react";
 
 export default function CheckboxQuestion(props) {
-   // function checkIsSelected(selectedAnswerIds, answerId) {
-   //    return selectedAnswerIds.includes(answerId);
-   // }
-
-   //  const questionTitle = props.question.questionTitle;
-   //  const answerChoices = props.question.answerChoices;
-   //  const questionId = props.question.questionId;
-   //  const selectedAnswerIds = props.question.selectedAnswerIds;
    const {
       questionTitle,
       answerChoices,
       questionId,
       selectedAnswerIds,
+      questionLimit,
    } = props.question;
+
+   function checkIsSelected(selectedAnswerIds, answerChoiceId) {
+      return selectedAnswerIds.includes(answerChoiceId);
+   }
+
+   function checkIsValidNumberOfSelectedAnswers(
+      e,
+      selectedAnswerIds,
+      questionLimit,
+      answerChoiceId
+   ) {
+      if (
+         selectedAnswerIds.length === questionLimit &&
+         selectedAnswerIds.includes(answerChoiceId)
+      ) {
+         props.setData(e);
+      }
+      if (selectedAnswerIds.length === questionLimit) {
+         // return message "You can only choose {questionLimit}."
+      } else {
+         props.setData(e);
+      }
+   }
 
    return (
       <div className="row mb-7">
@@ -23,28 +39,36 @@ export default function CheckboxQuestion(props) {
          </div>
          {answerChoices.map((answer) => {
             return (
-               <div className="col-xs-12 col-sm-6" key={answer.answerId}>
+               <div className="col-xs-12 col-sm-6" key={answer.answerChoiceId}>
                   <div className="custom-control custom-checkbox">
                      <input
                         type="checkbox"
                         className="custom-control-input"
-                        id={answer.answerId}
-                        // checked={checkIsSelected(
-                        //    selectedAnswerIds,
-                        //    answer.answerId
-                        // )}
+                        id={answer.answerChoiceId}
+                        checked={checkIsSelected(
+                           selectedAnswerIds,
+                           answer.answerChoiceId
+                        )}
                         name={questionId}
-                        value={answer.answerId}
+                        value={answer.answerChoiceId}
                         // onChange={(e) => {
                         //    props.setData(e);
                         // }}
+                        onChange={(e) => {
+                           checkIsValidNumberOfSelectedAnswers(
+                              e,
+                              selectedAnswerIds,
+                              questionLimit,
+                              answer.answerChoiceId
+                           );
+                        }}
                      />
 
                      <label
                         className="custom-control-label"
-                        htmlFor={answer.answerId}
+                        htmlFor={answer.answerChoiceId}
                      >
-                        {answer.answerText}
+                        {answer.answerChoiceText}
                      </label>
                   </div>
                </div>

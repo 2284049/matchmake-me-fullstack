@@ -20,7 +20,7 @@ class LogIn extends React.Component {
    }
 
    async validateAndLogInUser() {
-      const emailInput = document.getElementById("login-email-input").value; // get the user email input
+      const emailInput = document.getElementById("login-email-input").value;
       const passwordInput = document.getElementById("login-password-input")
          .value;
       const user = {
@@ -30,7 +30,7 @@ class LogIn extends React.Component {
       axios
          .post("/api/v1/users/auth", user)
          .then((res) => {
-            // Set token in localstorage
+            // Set token in local storage
             const authToken = res.data;
             localStorage.setItem("authToken", authToken);
             const user = jwtDecode(authToken);
@@ -111,7 +111,7 @@ class LogIn extends React.Component {
                            Password
                         </label>
                         <input
-                           type="email"
+                           type="password"
                            className={classnames({
                               "form-control": true,
                               "is-invalid": this.state.passwordError, // is-invalid class will display when emailError state equals true
