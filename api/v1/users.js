@@ -106,7 +106,17 @@ router.post("/auth", async (req, res) => {
 //
 // });
 
-//random
+// @route       POST api/v1/users/currentUser
+// @desc        Get data for current logged in user
+// @access      Public
+router.post("/currentUser", async (req, res) => {
+   console.log("I'm in the current user api");
+   const email = req.body.email;
+   console.log(email);
+   let currentUser = await getUserData(selectUserByEmail, email);
+   let user = currentUser[0];
+   res.status(200).json(user);
+});
 
 // @route       GET api/v1/users
 // @desc        Get data for all users
@@ -116,16 +126,16 @@ router.get("/", async (req, res) => {
    res.status(200).json(userData);
 });
 
-// @route       GET api/v1/currentUser
-// @desc        Get data for all users
-// @access      Public
-router.get("/currentUser", validateJwt, async (req, res) => {
-   console.log("Here is the request body: ", req.body);
-   const email = req.user.email;
-   console.log("Here's the user email in the router: ", email);
-   let userData = await getUserData(selectUserByEmail, email);
-   res.json(userData);
-});
+// // @route       GET api/v1/currentUser
+// // @desc        Get data for all users
+// // @access      Public
+// router.get("/currentUser", validateJwt, async (req, res) => {
+//    console.log("Here is the request body: ", req.body);
+//    const email = req.user.email;
+//    console.log("Here's the user email in the router: ", email);
+//    let userData = await getUserData(selectUserByEmail, email);
+//    res.json(userData);
+// });
 
 // FUNCTION TO GET ALL DATA, INCLUDING NESTED DATA FOR A USER/USERS
 async function getUserData(selectedQuery, email) {

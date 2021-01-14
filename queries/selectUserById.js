@@ -28,6 +28,6 @@ FROM
         LEFT JOIN
     questions ON questions.id = answers.question_id
 WHERE
-    user_id = ?
+    user_id = ?;
 `;
 module.exports = selectUserById;

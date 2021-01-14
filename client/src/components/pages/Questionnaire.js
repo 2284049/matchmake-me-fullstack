@@ -1,6 +1,6 @@
 import React from "react";
 import purpleLogo from "../../icons/purplelogo.png";
-import photoPose from "../../img/photogesture.jpg";
+// import photoPose from "../../img/photogesture.jpg";
 import RadioQuestion from "../ui/RadioQuestion";
 import CheckboxQuestion from "../ui/CheckboxQuestion";
 import LikertQuestion from "../ui/LikertQuestion";
@@ -35,31 +35,6 @@ class Questionnaire extends React.Component {
          });
       }
    }
-
-   // setUserAnswer() {
-   //    console.log("you set a user answer");
-   //    const userAnswer = {
-   //       id: getUuid(),
-   //       userId: this.props.currentUser.id,
-   //       answerId: e.target.id,
-   //    };
-   //    this.props.dispatch({
-   //       type: actions.UPDATE_CREATABLE_CARD,
-   //       payload: creatableCard,
-   //    });
-   //    console.log("here is the user answer object: ", userAnswer);
-   //    // axios request send this user object to the server
-   //    axios
-   //       .post("/api/v1/answers", answer)
-   //       .then((res) => {
-   //          console.log("user answer set: ", res);
-   //       })
-   //       .catch((err) => {
-   //          const data = err.response.data;
-   //          console.log(data);
-   //          // display error overlay & hide error overlay after 5 sec
-   //       });
-   // }
 
    async setCurrentUserData(e) {
       console.log("Here is the value: ", e.target.value);
@@ -130,13 +105,49 @@ class Questionnaire extends React.Component {
    }
 
    updateSelectedAnswers() {
+      const payload = { email: this.props.currentUser.email };
+      // must pass in an object to a post request
       axios
-         .get(`http://localhost:3046/api/users/currentUser`)
+         .post("/api/v1/users/currentUser", payload)
          .then((res) => {
-            // handle success
-            console.log("Here is the current user: ", res.data);
             const currentUserInDb = res.data;
+            console.log(
+               "Here is the current user in the db: ",
+               currentUserInDb
+            );
             const currentUserInRedux = this.props.currentUser;
+            console.log(
+               "Here is the current user in Redux: ",
+               currentUserInRedux
+            );
+            const answerInDbNotInRedux =
+               currentUserInDb.questions.selectedAnswerIds;
+
+            // setUserAnswer() {
+            //    console.log("you set a user answer");
+            //    const userAnswer = {
+            //       id: getUuid(),
+            //       userId: this.props.currentUser.id,
+            //       answerId: e.target.id,
+            //    };
+            //    this.props.dispatch({
+            //       type: actions.UPDATE_CREATABLE_CARD,
+            //       payload: creatableCard,
+            //    });
+            //    console.log("here is the user answer object: ", userAnswer);
+            //    // axios request send this user object to the server
+            //    axios
+            //       .post("/api/v1/answers", answer)
+            //       .then((res) => {
+            //          console.log("user answer set: ", res);
+            //       })
+            //       .catch((err) => {
+            //          const data = err.response.data;
+            //          console.log(data);
+            //          // display error overlay & hide error overlay after 5 sec
+            //       });
+            // }
+
             // map over all selectedAnswerIds in Redux
             // if Redux selectedAnswerId does not match a selectedAnswerId in the db,
             // add (POST) that selected answer object to the db
@@ -149,6 +160,7 @@ class Questionnaire extends React.Component {
          .catch((error) => {
             // handle error
          });
+      // this.props.history.push("/matches");
    }
 
    render() {

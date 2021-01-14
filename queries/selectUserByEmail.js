@@ -1,4 +1,4 @@
-const selectUserByEmail = ` 
+const selectUserByEmail = `
 SELECT 
     users.id AS user_id,
     users.username,
@@ -18,16 +18,16 @@ SELECT
     questions.type AS question_type,
     questions.limit AS question_limit,
     xref_user_answers.answer_id AS selected_answer_id,
-    answers.text AS selected_answer_text
+    answers.text AS answer_text
 FROM
     users
         LEFT JOIN
     xref_user_answers ON user_id = users.id
-        LEFT JOIN
-    answers ON answers.id = xref_user_answers.answer_id
+		LEFT JOIN
+	answers ON answers.id = xref_user_answers.answer_id
         LEFT JOIN
     questions ON questions.id = answers.question_id
 WHERE
-    users.email = ?
+	email = ?;
 `;
 module.exports = selectUserByEmail;
