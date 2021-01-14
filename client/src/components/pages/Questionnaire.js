@@ -104,64 +104,77 @@ class Questionnaire extends React.Component {
       });
    }
 
+   // setUserAnswer() {
+   //    console.log("you set a user answer");
+   //    const userAnswer = {
+   //       id: getUuid(),
+   //       userId: this.props.currentUser.id,
+   //       answerId: e.target.id,
+   //    };
+   //    this.props.dispatch({
+   //       type: actions.UPDATE_CREATABLE_CARD,
+   //       payload: creatableCard,
+   //    });
+   //    console.log("here is the user answer object: ", userAnswer);
+   //    // axios request send this user object to the server
+   //    axios
+   //       .post("/api/v1/answers", answer)
+   //       .then((res) => {
+   //          console.log("user answer set: ", res);
+   //       })
+   //       .catch((err) => {
+   //          const data = err.response.data;
+   //          console.log(data);
+   //          // display error overlay & hide error overlay after 5 sec
+   //       });
+   // }
+
    updateSelectedAnswers() {
-      const payload = { email: this.props.currentUser.email };
-      // must pass in an object to a post request
       axios
-         .post("/api/v1/users/currentUser", payload)
+         .get(`http://localhost:3046/api/v1/user-answers`)
          .then((res) => {
-            const currentUserInDb = res.data;
-            console.log(
-               "Here is the current user in the db: ",
-               currentUserInDb
-            );
-            const currentUserInRedux = this.props.currentUser;
-            console.log(
-               "Here is the current user in Redux: ",
-               currentUserInRedux
-            );
-            const answerInDbNotInRedux =
-               currentUserInDb.questions.selectedAnswerIds;
-
-            // setUserAnswer() {
-            //    console.log("you set a user answer");
-            //    const userAnswer = {
-            //       id: getUuid(),
-            //       userId: this.props.currentUser.id,
-            //       answerId: e.target.id,
-            //    };
-            //    this.props.dispatch({
-            //       type: actions.UPDATE_CREATABLE_CARD,
-            //       payload: creatableCard,
-            //    });
-            //    console.log("here is the user answer object: ", userAnswer);
-            //    // axios request send this user object to the server
-            //    axios
-            //       .post("/api/v1/answers", answer)
-            //       .then((res) => {
-            //          console.log("user answer set: ", res);
-            //       })
-            //       .catch((err) => {
-            //          const data = err.response.data;
-            //          console.log(data);
-            //          // display error overlay & hide error overlay after 5 sec
-            //       });
-            // }
-
-            // map over all selectedAnswerIds in Redux
-            // if Redux selectedAnswerId does not match a selectedAnswerId in the db,
-            // add (POST) that selected answer object to the db
-            // map over all selectedAnswerIds in DB
-            // if DB selectedAnswerId does not match a selectedAnswerId in Redux,
-            // delete that selected answer row from the db
-
-            // execute setMatchScore function
+            // handle success
+            const userAnswersInDb = res.data;
+            console.log(userAnswersInDb);
          })
          .catch((error) => {
             // handle error
          });
-      // this.props.history.push("/matches");
    }
+
+   // updateSelectedAnswers() {
+   //    const payload = { email: this.props.currentUser.email };
+   //    // must pass in an object to a post request
+   //    axios
+   //       .post("/api/v1/users/currentUser", payload)
+   //       .then((res) => {
+   //          const currentUserInDb = res.data;
+   //          console.log(
+   //             "Here is the current user in the db: ",
+   //             currentUserInDb
+   //          );
+   //          const currentUserInRedux = this.props.currentUser;
+   //          console.log(
+   //             "Here is the current user in Redux: ",
+   //             currentUserInRedux
+   //          );
+   //          const answerInDbNotInRedux =
+   //             currentUserInDb.questions.selectedAnswerIds;
+
+   // map over all selectedAnswerIds in Redux
+   // if Redux selectedAnswerId does not match a selectedAnswerId in the db,
+   // add (POST) that selected answer object to the db
+   // map over all selectedAnswerIds in DB
+   // if DB selectedAnswerId does not match a selectedAnswerId in Redux,
+   // delete that selected answer row from the db
+
+   // execute setMatchScore function
+   //       })
+   //       .catch((error) => {
+   //          // handle error
+   //       });
+   //    // this.props.history.push("/matches");
+   // }
 
    render() {
       return (
