@@ -133,9 +133,46 @@ class Questionnaire extends React.Component {
       axios
          .get(`http://localhost:3046/api/v1/user-answers`)
          .then((res) => {
+            // console.log(res.data);
             // handle success
             const userAnswersInDb = res.data;
-            console.log(userAnswersInDb);
+            let allUserAnswerIdsInRedux = [];
+            const individualUserAnswerId = this.props.currentUser.questions.map(
+               (question) => {
+                  return question.selectedAnswerIds.map((selectedAnswerId) => {
+                     return selectedAnswerId;
+                  });
+               }
+            );
+            allUserAnswerIdsInRedux = allUserAnswerIdsInRedux.concat(
+               individualUserAnswerId
+            );
+            allUserAnswerIdsInRedux = allUserAnswerIdsInRedux.flat();
+            console.log(allUserAnswerIdsInRedux);
+
+            const answerNotInRedux = userAnswersInDb.map((userAnswerInDb) => {
+               if (!allUserAnswerIdsInRedux.includes(userAnswerInDb.answerId)) {
+                  const copyOfUserAnswerInDb = { ...userAnswerInDb }; // make a shallow copy first
+                  console.log(
+                     "Here are the answers in db, but not in redux: ",
+                     copyOfUserAnswerInDb
+                  );
+                  // axios
+                  //    .delete(
+                  //       `/api/v1/user-answers/${copyOfUserAnswerInDb.userAnswerId}`
+                  //    )
+                  //    .then((res) => {
+                  //       console.log(
+                  //          "Here is the delete response data: ",
+                  //          res.data
+                  //       );
+                  //    })
+                  //    .catch((err) => {
+                  //       console.log(err.response.data);
+                  //       // display error overlay
+                  //    });
+               }
+            });
          })
          .catch((error) => {
             // handle error

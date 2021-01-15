@@ -7,6 +7,7 @@ const selectAllUserAnswers = require("../../queries/selectAllUserAnswers");
 const insertUserAnswer = require("../../queries/insertUserAnswer");
 // const updateUserAnswer = require("../../queries/updateMemoryCard");
 const validateJwt = require("../../utils/validateJwt");
+const { toJson, toSafeParse } = require("../../utils/helpers");
 
 // // @route POST api/v1/answers
 // // @desc  create a new answer
@@ -33,10 +34,13 @@ const validateJwt = require("../../utils/validateJwt");
 // });
 
 // @route       GET api/v1/user-answers
-// @desc        Get all memory cards for a user by search term and order
+// @desc        Get all answers for a user
 // @access      Private
 router.get("/", validateJwt, (req, res) => {
-   const userId = req.user.id;
+   // console.log("I am in the get user answers route.");
+   const userId = req.user.userId;
+   // console.log(req.user);
+   // console.log(userId);
    db.query(selectAllUserAnswers, userId)
       // in selectUserAnswers query, we have 1 question mark
       // in the parameters above, we are defining the question mark in the query as "userId"
@@ -52,8 +56,10 @@ router.get("/", validateJwt, (req, res) => {
                };
             }
          );
-         console.log(camelCasedUserAnswersInDb);
-         return res.status(200).json(camelCasedUserAnswersInDb);
+         // console.log(toSafeParse(toJson(camelCasedUserAnswersInDb)));
+         return res
+            .status(200)
+            .json(toSafeParse(toJson(camelCasedUserAnswersInDb)));
       })
       .catch((err) => {
          console.log(err);
@@ -103,20 +109,22 @@ router.get("/", validateJwt, (req, res) => {
 //       });
 // });
 
-// // @route       DELETE api/v1/memory-cards/:id
-// // @desc        Delete a memory card in the memory cards resource
-// // @access      Private
-// router.delete("/:id", validateJwt, (req, res) => {
-//    const id = req.params.id; // memory card id from URL
-//    db.query(deleteMemoryCardById, id)
-//       .then(() => {
-//          return res.status(200).json({ success: "Card deleted" }); // return with a status
-//       })
-//       .catch((err) => {
-//          console.log(err);
-//          const dbError = `${err.code} ${err.sqlMessage}`;
-//          res.status(500).json({ dbError });
-//       });
-// });
+// @route       DELETE api/v1/user-answers/:answerId
+// @desc        Delete a user answer from the user-answers resource
+// @access      Private
+router.delete("/:id", validateJwt, (req, res) => {
+   console.log("I'm in the delete route");
+   const id = req.params.id;
+   console.log("Here's the delete item id: ", id);
+   // db.query(deleteUserAnswer, id)
+   //    .then(() => {
+   //       return res.status(200).json({ success: "answer deleted" }); // return with a status
+   //    })
+   //    .catch((err) => {
+   //       console.log(err);
+   //       const dbError = `${err.code} ${err.sqlMessage}`;
+   //       res.status(500).json({ dbError });
+   //    });
+});
 
-// module.exports = router;
+module.exports = router;
