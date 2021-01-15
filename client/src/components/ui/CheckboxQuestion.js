@@ -19,6 +19,9 @@ export default function CheckboxQuestion(props) {
       questionLimit,
       answerChoiceId
    ) {
+      if (questionLimit === 0) {
+         props.setData(e);
+      }
       if (
          selectedAnswerIds.length === questionLimit &&
          selectedAnswerIds.includes(answerChoiceId)

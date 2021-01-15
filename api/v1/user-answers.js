@@ -24,7 +24,7 @@ router.post("/", validateJwt, (req, res) => {
    db.query(insertUserAnswer, userAnswer)
       .then((dbRes) => {
          // success
-         console.log("Created user answer in the db: ", dbRes);
+         // console.log("Created user answer in the db: ", dbRes);
          return res.status(200).json({ success: "User answer created" }); // return with a status
       })
       .catch((err) => {

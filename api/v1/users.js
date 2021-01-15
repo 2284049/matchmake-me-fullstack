@@ -115,6 +115,7 @@ router.post("/currentUser", async (req, res) => {
    console.log(email);
    let currentUser = await getUserData(selectUserByEmail, email);
    let user = currentUser[0];
+   console.log("This is the user: ", user);
    res.status(200).json(user);
 });
 

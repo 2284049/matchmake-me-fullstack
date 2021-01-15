@@ -14,7 +14,7 @@ class Questionnaire extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         currentUserData: this.props.currentUser,
+         currentUserData: {},
       };
       this.setCurrentUserData = this.setCurrentUserData.bind(this);
       this.setCurrentUserDataRadioVersion = this.setCurrentUserDataRadioVersion.bind(
@@ -23,9 +23,20 @@ class Questionnaire extends React.Component {
    }
 
    componentDidMount() {
-      this.setState({
-         currentUserData: this.props.currentUser,
-      });
+      const payload = { email: this.props.currentUser.email };
+      // must pass in an object to a post request
+      axios
+         .post("/api/v1/users/currentUser", payload)
+         .then((res) => {
+            // handle success
+            // console.log(res.data);
+            this.setState({
+               currentUserData: res.data,
+            });
+         })
+         .catch((error) => {
+            // handle error
+         });
    }
 
    // DO THIS IN CASE THE DATA DOESN'T LOAD RIGHT AWAY AND UPDATE THE STATE
@@ -104,31 +115,6 @@ class Questionnaire extends React.Component {
          payload: this.state.currentUserData,
       });
    }
-
-   // setUserAnswer() {
-   //    console.log("you set a user answer");
-   //    const userAnswer = {
-   //       id: getUuid(),
-   //       userId: this.props.currentUser.id,
-   //       answerId: e.target.id,
-   //    };
-   //    this.props.dispatch({
-   //       type: actions.UPDATE_CREATABLE_CARD,
-   //       payload: creatableCard,
-   //    });
-   //    console.log("here is the user answer object: ", userAnswer);
-   //    // axios request send this user object to the server
-   //    axios
-   //       .post("/api/v1/answers", answer)
-   //       .then((res) => {
-   //          console.log("user answer set: ", res);
-   //       })
-   //       .catch((err) => {
-   //          const data = err.response.data;
-   //          console.log(data);
-   //          // display error overlay & hide error overlay after 5 sec
-   //       });
-   // }
 
    updateSelectedAnswers() {
       axios
@@ -214,6 +200,7 @@ class Questionnaire extends React.Component {
          .catch((error) => {
             // handle error
          });
+      this.props.history.push("/matches");
    }
 
    // execute setMatchScore function
@@ -221,7 +208,6 @@ class Questionnaire extends React.Component {
    //       .catch((error) => {
    //          // handle error
    //       });
-   //    // this.props.history.push("/matches");
    // }
 
    render() {
