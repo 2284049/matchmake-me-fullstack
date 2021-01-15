@@ -149,7 +149,7 @@ class Questionnaire extends React.Component {
                individualUserAnswerIdInRedux
             );
             allUserAnswerIdsInRedux = allUserAnswerIdsInRedux.flat();
-            console.log(allUserAnswerIdsInRedux);
+            // console.log(allUserAnswerIdsInRedux);
             let allUserAnswerIdsInDb = [];
             const individualUserAnswerIdInDb = userAnswersInDb.map(
                (userAnswerInDb) => {
@@ -161,7 +161,7 @@ class Questionnaire extends React.Component {
                individualUserAnswerIdInDb
             );
             allUserAnswerIdsInDb = allUserAnswerIdsInDb.flat();
-            console.log(allUserAnswerIdsInDb);
+            // console.log(allUserAnswerIdsInDb);
 
             const answerNotInRedux = userAnswersInDb.map((userAnswerInDb) => {
                if (!allUserAnswerIdsInRedux.includes(userAnswerInDb.answerId)) {
@@ -187,61 +187,34 @@ class Questionnaire extends React.Component {
                }
             });
 
-            // const answerToAddToDb = allUserAnswerIdsInRedux.map(
-            //    (userAnswerInRedux) => {
-            //       if (
-            //          !allUserAnswerIdsInDb.includes(userAnswerInRedux.answerId)
-            //       ) {
-            //          const answer = {
-            //             userAnswerId: getUuid(),
-            //             userId: this.props.currentUser.userId,
-            //             answerId: userAnswerInRedux.answerId,
-            //          };
-            //          axios // save to database (make an api call)
-            //             .post("/api/v1/user-answers", answer)
-            //             .then((res) => {
-            //                console.log("Answer created");
-            //                // display success overlay
-            //             })
-            //             .catch((err) => {
-            //                const data = err.response.data;
-            //                console.log(data);
-            //                // display error overlay & hide error overlay after 5 sec
-            //             });
-            //       }
-            //    }
-            // );
+            const answerToAddToDb = allUserAnswerIdsInRedux.map(
+               (userAnswerIdInRedux) => {
+                  if (!allUserAnswerIdsInDb.includes(userAnswerIdInRedux)) {
+                     const answer = {
+                        userAnswerId: getUuid(),
+                        userId: this.props.currentUser.userId,
+                        answerId: userAnswerIdInRedux,
+                     };
+                     console.log(answer);
+                     axios // save to database (make an api call)
+                        .post("/api/v1/user-answers", answer)
+                        .then((res) => {
+                           console.log("Answer created: ", res.data);
+                           // display success overlay
+                        })
+                        .catch((err) => {
+                           const data = err.response.data;
+                           console.log(data);
+                           // display error overlay & hide error overlay after 5 sec
+                        });
+                  }
+               }
+            );
          })
          .catch((error) => {
             // handle error
          });
    }
-
-   // updateSelectedAnswers() {
-   //    const payload = { email: this.props.currentUser.email };
-   //    // must pass in an object to a post request
-   //    axios
-   //       .post("/api/v1/users/currentUser", payload)
-   //       .then((res) => {
-   //          const currentUserInDb = res.data;
-   //          console.log(
-   //             "Here is the current user in the db: ",
-   //             currentUserInDb
-   //          );
-   //          const currentUserInRedux = this.props.currentUser;
-   //          console.log(
-   //             "Here is the current user in Redux: ",
-   //             currentUserInRedux
-   //          );
-   //          const answerInDbNotInRedux =
-   //             currentUserInDb.questions.selectedAnswerIds;
-
-   // map over all selectedAnswerIds in Redux
-   // if Redux selectedAnswerId does not match a selectedAnswerId in the db,
-   // add (POST) that selected answer object to the db
-   // map over all selectedAnswerIds in DB
-   // if DB selectedAnswerId does not match a selectedAnswerId in Redux,
-   // delete that selected answer row from the db
 
    // execute setMatchScore function
    //       })
