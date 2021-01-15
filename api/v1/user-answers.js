@@ -4,34 +4,35 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../db");
 const selectAllUserAnswers = require("../../queries/selectAllUserAnswers");
+const deleteUserAnswer = require("../../queries/deleteUserAnswer");
+
 const insertUserAnswer = require("../../queries/insertUserAnswer");
 // const updateUserAnswer = require("../../queries/updateMemoryCard");
 const validateJwt = require("../../utils/validateJwt");
 const { toJson, toSafeParse } = require("../../utils/helpers");
 
-// // @route POST api/v1/answers
-// // @desc  create a new answer
-// // @access      Private
-
-// router.post("/", validateJwt, (req, res) => {
-//    const userAnswer = {
-//       id: req.body.id,
-//       user_id: req.user.id, // req.user is part of validateJwt; that is where we defined req.user
-//       answer_id: req.body.answerId,
-//    };
-//    console.log("here's the answer: ", userAnswer);
-//    db.query(insertUserAnswer, userAnswer)
-//       .then((dbRes) => {
-//          // success
-//          console.log("Created user answer in the db: ", dbRes);
-//          return res.status(200).json({ success: "User answer created" }); // return with a status
-//       })
-//       .catch((err) => {
-//          console.log(err);
-//          const dbError = `${err.code} ${err.sqlMessage}`;
-//          res.status(400).json({ dbError });
-//       });
-// });
+// @route      POST api/v1/user-answers
+// @desc       create a new answer
+// @access     Private
+router.post("/", validateJwt, (req, res) => {
+   const userAnswer = {
+      id: req.body.userAnswerId,
+      user_id: req.body.userId, // req.user is part of validateJwt; that is where we defined req.user
+      answer_id: req.body.answerId,
+   };
+   console.log("here's the answer: ", userAnswer);
+   db.query(insertUserAnswer, userAnswer)
+      .then((dbRes) => {
+         // success
+         console.log("Created user answer in the db: ", dbRes);
+         return res.status(200).json({ success: "User answer created" }); // return with a status
+      })
+      .catch((err) => {
+         console.log(err);
+         const dbError = `${err.code} ${err.sqlMessage}`;
+         res.status(400).json({ dbError });
+      });
+});
 
 // @route       GET api/v1/user-answers
 // @desc        Get all answers for a user
@@ -116,15 +117,15 @@ router.delete("/:id", validateJwt, (req, res) => {
    console.log("I'm in the delete route");
    const id = req.params.id;
    console.log("Here's the delete item id: ", id);
-   // db.query(deleteUserAnswer, id)
-   //    .then(() => {
-   //       return res.status(200).json({ success: "answer deleted" }); // return with a status
-   //    })
-   //    .catch((err) => {
-   //       console.log(err);
-   //       const dbError = `${err.code} ${err.sqlMessage}`;
-   //       res.status(500).json({ dbError });
-   //    });
+   db.query(deleteUserAnswer, id)
+      .then(() => {
+         return res.status(200).json({ success: "answer deleted" }); // return with a status
+      })
+      .catch((err) => {
+         console.log(err);
+         const dbError = `${err.code} ${err.sqlMessage}`;
+         res.status(500).json({ dbError });
+      });
 });
 
 module.exports = router;

@@ -8,6 +8,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { connect } from "react-redux";
 import axios from "axios";
 import actions from "../../store/actions";
+import { v4 as getUuid } from "uuid";
 
 class Questionnaire extends React.Component {
    constructor(props) {
@@ -137,7 +138,7 @@ class Questionnaire extends React.Component {
             // handle success
             const userAnswersInDb = res.data;
             let allUserAnswerIdsInRedux = [];
-            const individualUserAnswerId = this.props.currentUser.questions.map(
+            const individualUserAnswerIdInRedux = this.props.currentUser.questions.map(
                (question) => {
                   return question.selectedAnswerIds.map((selectedAnswerId) => {
                      return selectedAnswerId;
@@ -145,10 +146,22 @@ class Questionnaire extends React.Component {
                }
             );
             allUserAnswerIdsInRedux = allUserAnswerIdsInRedux.concat(
-               individualUserAnswerId
+               individualUserAnswerIdInRedux
             );
             allUserAnswerIdsInRedux = allUserAnswerIdsInRedux.flat();
             console.log(allUserAnswerIdsInRedux);
+            let allUserAnswerIdsInDb = [];
+            const individualUserAnswerIdInDb = userAnswersInDb.map(
+               (userAnswerInDb) => {
+                  return userAnswerInDb.answerId;
+               }
+            );
+
+            allUserAnswerIdsInDb = allUserAnswerIdsInDb.concat(
+               individualUserAnswerIdInDb
+            );
+            allUserAnswerIdsInDb = allUserAnswerIdsInDb.flat();
+            console.log(allUserAnswerIdsInDb);
 
             const answerNotInRedux = userAnswersInDb.map((userAnswerInDb) => {
                if (!allUserAnswerIdsInRedux.includes(userAnswerInDb.answerId)) {
@@ -157,22 +170,47 @@ class Questionnaire extends React.Component {
                      "Here are the answers in db, but not in redux: ",
                      copyOfUserAnswerInDb
                   );
-                  // axios
-                  //    .delete(
-                  //       `/api/v1/user-answers/${copyOfUserAnswerInDb.userAnswerId}`
-                  //    )
-                  //    .then((res) => {
-                  //       console.log(
-                  //          "Here is the delete response data: ",
-                  //          res.data
-                  //       );
-                  //    })
-                  //    .catch((err) => {
-                  //       console.log(err.response.data);
-                  //       // display error overlay
-                  //    });
+                  axios
+                     .delete(
+                        `/api/v1/user-answers/${copyOfUserAnswerInDb.userAnswerId}`
+                     )
+                     .then((res) => {
+                        console.log(
+                           "Here is the deleted response data: ",
+                           res.data
+                        );
+                     })
+                     .catch((err) => {
+                        console.log(err.response.data);
+                        // display error overlay
+                     });
                }
             });
+
+            // const answerToAddToDb = allUserAnswerIdsInRedux.map(
+            //    (userAnswerInRedux) => {
+            //       if (
+            //          !allUserAnswerIdsInDb.includes(userAnswerInRedux.answerId)
+            //       ) {
+            //          const answer = {
+            //             userAnswerId: getUuid(),
+            //             userId: this.props.currentUser.userId,
+            //             answerId: userAnswerInRedux.answerId,
+            //          };
+            //          axios // save to database (make an api call)
+            //             .post("/api/v1/user-answers", answer)
+            //             .then((res) => {
+            //                console.log("Answer created");
+            //                // display success overlay
+            //             })
+            //             .catch((err) => {
+            //                const data = err.response.data;
+            //                console.log(data);
+            //                // display error overlay & hide error overlay after 5 sec
+            //             });
+            //       }
+            //    }
+            // );
          })
          .catch((error) => {
             // handle error
