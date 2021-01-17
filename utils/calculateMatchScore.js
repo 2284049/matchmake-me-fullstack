@@ -18,27 +18,21 @@ function calculateMatchScore() {
          const currentUser = users.map((user) => {
             return user.userId === this.props.currentUser.userId;
          });
-         const individualMatch = users.map((user) => {
-            if (!user.userId === this.props.currentUser.userId) {
+         const individualMatch = users.map((match) => {
+            if (!match.userId === this.props.currentUser.userId) {
                match.score = Date.now(); // adding createdAt property
 
                return user;
             }
          });
-
-         //    this.props.dispatch({
-         //       type: actions.STORE_MATCHES,
-         //       payload: res.data,
-         //    });
       })
       .catch((error) => {
          // handle error
       });
-   // make an array of current user answers from db
-   // make an array of current match answers from db
-   // map through each current user answer,
-   // if current user answer id is X and current match answers array includes
-   // answer choice 1, take current score and add 5
+
+   // map through every current user likert question,
+   // get the selected answer id
+   // match the selected answer id to the answer choice id to get the answer choice's position
 }
 function mapStateToProps(state) {
    //global state

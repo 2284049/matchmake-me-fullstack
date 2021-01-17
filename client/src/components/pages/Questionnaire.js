@@ -50,9 +50,9 @@ class Questionnaire extends React.Component {
 
    async setCurrentUserData(e) {
       console.log("Here is the value: ", e.target.value);
-      const questionId = e.target.name; // the id of the question
-      const updatedAnswerId = e.target.id; // the current selected answer id
-      const updatedCurrentUserData = cloneDeep(this.state.currentUserData); // lodash cloneDeep to make a DEEP COPY
+      const questionId = e.target.name; // the id of the question where the answer is being selected
+      const updatedAnswerId = e.target.id; // the newly selected answer id
+      const updatedCurrentUserData = cloneDeep(this.state.currentUserData); // lodash cloneDeep to make a DEEP COPY of currentUserData before changing
       let updatedAnswerIds = []; // creating an empty array of the updated answer ids, which will replace selectedAnswerIds
       const question = updatedCurrentUserData.questions.find((question) => {
          return question.questionId === questionId; // gives us the question where the current selection is being made; in the questions array, we want to find the question that has the same id as the current selected answer

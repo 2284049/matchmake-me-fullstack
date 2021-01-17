@@ -115,7 +115,7 @@ router.post("/currentUser", async (req, res) => {
    console.log(email);
    let currentUser = await getUserData(selectUserByEmail, email);
    let user = currentUser[0];
-   console.log("This is the user: ", user);
+   // console.log("This is the user: ", user);
    res.status(200).json(user);
 });
 
@@ -161,8 +161,6 @@ async function getUserData(selectedQuery, email) {
                verifyPhotoUrl: queriedUser.verify_photo_url,
                questionId: queriedUser.question_id,
                selectedAnswerId: queriedUser.selected_answer_id,
-               selectedAnswerText: queriedUser.selected_answer_text,
-               selectedAnswerPosition: queriedUser.selected_answer_position,
             };
          });
          // console.log("Here are camel cased users: ", camelCasedUsers);
@@ -252,8 +250,6 @@ async function getUserData(selectedQuery, email) {
                         return {
                            selectedAnswerId:
                               queriedUserForAnswers.selectedAnswerId,
-                           selectedAnswerPosition:
-                              queriedUserForAnswers.selectedAnswerPosition,
                            userId: queriedUserForAnswers.userId,
                            questionId: queriedUserForAnswers.questionId,
                         };
@@ -266,11 +262,7 @@ async function getUserData(selectedQuery, email) {
                         );
                      })
                      .map((selectedAnswer) => {
-                        return {
-                           selectedAnswerId: selectedAnswer.selectedAnswerId,
-                           selectedAnswerPosition:
-                              selectedAnswer.selectedAnswerPosition,
-                        };
+                        return selectedAnswer.selectedAnswerId;
                      }),
                };
             }
