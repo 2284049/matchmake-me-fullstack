@@ -5,7 +5,8 @@ const selectAllQuestionsAndAnswerChoices = `
 	    questions.type AS question_type,
 	    questions.limit AS question_limit,
         answers.id AS answer_id,
-        answers.text AS answer_text
+        answers.text AS answer_text,
+        answers.position AS answer_position
     FROM
 	    questions
 		    INNER JOIN

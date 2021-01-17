@@ -24,6 +24,7 @@ router.get("/", (req, res) => {
                   questionLimit: camelCasedQuestion.question_limit,
                   answerId: camelCasedQuestion.answer_id,
                   answerText: camelCasedQuestion.answer_text,
+                  answerPosition: camelCasedQuestion.answer_position,
                };
                // camelCasedQuestionsAndAnswers gives us an object for EVERY SELECTED ANSWER
                // so multiple objects for each question
@@ -61,6 +62,7 @@ router.get("/", (req, res) => {
                      return {
                         answerId: questionAnswer.answerId,
                         answerText: questionAnswer.answerText,
+                        answerPosition: questionAnswer.answerPosition,
                      };
                   });
                return {

@@ -162,6 +162,7 @@ async function getUserData(selectedQuery, email) {
                questionId: queriedUser.question_id,
                selectedAnswerId: queriedUser.selected_answer_id,
                selectedAnswerText: queriedUser.selected_answer_text,
+               selectedAnswerPosition: queriedUser.selected_answer_position,
             };
          });
          // console.log("Here are camel cased users: ", camelCasedUsers);
@@ -185,6 +186,7 @@ async function getUserData(selectedQuery, email) {
                questionLimit: queriedQuestion.question_limit,
                answerChoiceId: queriedQuestion.answer_id,
                answerChoiceText: queriedQuestion.answer_text,
+               answerChoicePosition: queriedQuestion.answer_position,
             };
          });
          // console.log(
@@ -227,6 +229,8 @@ async function getUserData(selectedQuery, email) {
                         return {
                            answerChoiceText: queriedQuestion.answerChoiceText,
                            answerChoiceId: queriedQuestion.answerChoiceId,
+                           answerChoicePosition:
+                              queriedQuestion.answerChoicePosition,
                            questionId: queriedQuestion.questionId,
                            // put every single answer choice for all questions under one question
                            // add questionId temporarily to filter by it
@@ -248,6 +252,8 @@ async function getUserData(selectedQuery, email) {
                         return {
                            selectedAnswerId:
                               queriedUserForAnswers.selectedAnswerId,
+                           selectedAnswerPosition:
+                              queriedUserForAnswers.selectedAnswerPosition,
                            userId: queriedUserForAnswers.userId,
                            questionId: queriedUserForAnswers.questionId,
                         };
@@ -260,7 +266,11 @@ async function getUserData(selectedQuery, email) {
                         );
                      })
                      .map((selectedAnswer) => {
-                        return selectedAnswer.selectedAnswerId;
+                        return {
+                           selectedAnswerId: selectedAnswer.selectedAnswerId,
+                           selectedAnswerPosition:
+                              selectedAnswer.selectedAnswerPosition,
+                        };
                      }),
                };
             }

@@ -18,7 +18,9 @@ SELECT
     questions.type AS question_type,
     questions.limit AS question_limit,
     xref_user_answers.answer_id AS selected_answer_id,
-    answers.text AS answer_text
+    answers.text AS selected_answer_text,
+    answers.position AS selected_answer_position
+
 FROM
     users
         LEFT JOIN

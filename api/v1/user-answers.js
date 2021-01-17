@@ -54,6 +54,7 @@ router.get("/", validateJwt, (req, res) => {
                   userAnswerId: userAnswerInDb.id,
                   userId: userAnswerInDb.user_id,
                   answerId: userAnswerInDb.answer_id,
+                  answerPosition: userAnswerInDb.answer_position,
                };
             }
          );

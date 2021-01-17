@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
                questionId: dbMatch.question_id,
                selectedAnswerId: dbMatch.selected_answer_id,
                selectedAnswerText: dbMatch.selected_answer_text,
+               selectedAnswerPosition: dbMatch.selected_answer_position,
             };
          });
          // console.log("Here are camel cased users: ", camelCasedMatches);
@@ -56,6 +57,7 @@ router.get("/", async (req, res) => {
                questionLimit: dbQuestion.question_limit,
                answerChoiceId: dbQuestion.answer_id,
                answerChoiceText: dbQuestion.answer_text,
+               answerChoicePosition: dbQuestion.answer_position,
             };
          });
          // console.log(
