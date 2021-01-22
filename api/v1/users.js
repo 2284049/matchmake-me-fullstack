@@ -19,6 +19,7 @@ const selectAllUsers = require("../../queries/selectAllUsers");
 const selectAllQuestionsAndAnswerChoices = require("../../queries/selectAllQuestionsAndAnswerChoices");
 const uniqBy = require("lodash/uniqBy");
 const validateJwt = require("../../utils/validateJwt");
+const orderBy = require("lodash/orderBy");
 
 // @route       POST api/v1/users
 // @desc        Create a new user
@@ -222,27 +223,33 @@ async function getUserData(selectedQuery, email) {
                   questionTitle: uniqQuestion.questionTitle,
                   questionType: uniqQuestion.questionType,
                   questionLimit: uniqQuestion.questionLimit,
-                  answerChoices: queriedQuestions
-                     .map((queriedQuestion) => {
-                        return {
-                           answerChoiceText: queriedQuestion.answerChoiceText,
-                           answerChoiceId: queriedQuestion.answerChoiceId,
-                           answerChoicePosition:
-                              queriedQuestion.answerChoicePosition,
-                           questionId: queriedQuestion.questionId,
-                           // put every single answer choice for all questions under one question
-                           // add questionId temporarily to filter by it
-                        };
-                     })
-                     .filter((answerChoice) => {
-                        return (
-                           uniqQuestion.questionId === answerChoice.questionId
-                        );
-                     })
-                     .map((answerChoice) => {
-                        delete answerChoice.questionId;
-                        return answerChoice;
-                     }), // can just put answerChoices, since they're the same
+                  answerChoices: orderBy(
+                     queriedQuestions
+                        .map((queriedQuestion) => {
+                           return {
+                              answerChoiceText:
+                                 queriedQuestion.answerChoiceText,
+                              answerChoiceId: queriedQuestion.answerChoiceId,
+                              answerChoicePosition:
+                                 queriedQuestion.answerChoicePosition,
+                              questionId: queriedQuestion.questionId,
+                              // put every single answer choice for all questions under one question
+                              // add questionId temporarily to filter by it
+                           };
+                        })
+                        .filter((answerChoice) => {
+                           return (
+                              uniqQuestion.questionId ===
+                              answerChoice.questionId
+                           );
+                        })
+                        .map((answerChoice) => {
+                           delete answerChoice.questionId;
+                           return answerChoice;
+                        }), // all of this from 225 to here is answerChoices
+                     `answerChoicePosition`,
+                     `asc`
+                  ), // can just put answerChoices, since they're the same
                   selectedAnswerIds: queriedUsers
                      .map((queriedUserForAnswers) => {
                         // we want every selected answer from every single user

@@ -53,7 +53,7 @@ export default function CheckboxQuestion(props) {
                            answer.answerChoiceId
                         )}
                         name={questionId}
-                        value={answer.answerChoiceId}
+                        value='["position", "desc"]'
                         // onChange={(e) => {
                         //    props.setData(e);
                         // }}

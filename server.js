@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1/users", require("./api/v1/users"));
-// app.use("/api/v1/matches", require("./api/v1/matches"));
+app.use("/api/v1/matches", require("./api/v1/matches"));
 // app.use("/api/v1/questions", require("./api/v1/questions"));
 app.use("/api/v1/questions1", require("./api/v1/questions1"));
 app.use("/api/v1/questions2", require("./api/v1/questions2"));
