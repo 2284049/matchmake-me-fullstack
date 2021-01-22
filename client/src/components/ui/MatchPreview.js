@@ -31,6 +31,9 @@ class MatchPreview extends React.Component {
                      alt="Match"
                   />
                   <h3 className="text-center">{this.props.match.username}</h3>
+                  <h4 className="text-center">
+                     match score: {this.props.match.score}
+                  </h4>
                </Link>
                <br></br>
                <br></br>

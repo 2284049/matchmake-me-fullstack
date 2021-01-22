@@ -11,7 +11,7 @@ import actions from "../../store/actions";
 class Matches extends React.Component {
    componentDidMount() {
       axios
-         .get("http://localhost:3046/api/v1/users")
+         .get("http://localhost:3046/api/v1/matches")
          .then((res) => {
             // handle success
             console.log(res);
@@ -25,89 +25,6 @@ class Matches extends React.Component {
             // handle error
          });
    }
-
-   // calculateMatchScore() {
-   //    // exact same answer = +10
-   //    // answer 1 away = +5
-   //    // answers extreme opposites = -10
-   //    axios
-   //       .get("http://localhost:3046/api/v1/users")
-   //       .then((res) => {
-   //          // handle success
-   //          console.log(res);
-   //          const users = res.data;
-   //          const currentUser = users.map((user) => {
-   //             return user.userId === this.props.currentUser.userId;
-   //          });
-   //          const currentUserQuestions = currentUser.questions.map(
-   //             (currentUserQuestion) => {
-   //                // go through each current user question
-
-   //                if (currentUserQuestion.questionType === 3) {
-   //                   // if it's a likert scale question...
-   //                   const currentUserAnswerPosition = currentUserQuestion.answerChoices.filter(
-   //                      (userAnswerChoice) => {
-   //                         if (
-   //                            userAnswerChoice.answerId ===
-   //                            currentUserQuestion.selectedAnswerId
-   //                         ) {
-   //                            return userAnswerChoice.AnswerChoicePosition;
-   //                            // now we have the position of the current user's selected answer for this question
-   //                         }
-   //                      }
-   //                   );
-   //                   const matchesWithMatchScores = users.map((match) => {
-   //                      if (!match.userId === this.props.currentUser.userId) {
-   //                         // get all mathches (users other than current user)
-   //                         const sameQuestion = match.questions.filter(
-   //                            (matchQuestion) => {
-   //                               return (
-   //                                  matchQuestion.questionId ===
-   //                                  currentUserQuestion.questionId
-   //                                  // filter the match questions for the one that matches the current user question that's currently being mapped
-   //                               );
-   //                            }
-   //                         );
-   //                         const matchAnswerPosition = sameQuestion.answerChoices.filter(
-   //                            (matchAnswerChoice) => {
-   //                               if (
-   //                                  matchAnswerChoice.answerId ===
-   //                                  sameQuestion.selectedAnswerId
-   //                               ) {
-   //                                  return matchAnswerChoice.AnswerChoicePosition;
-   //                                  // now we have the position of the match's selected answer for this question
-   //                               }
-   //                            }
-   //                         );
-   //                         let matchScore = 0; // adding score property
-   //                         if (
-   //                            currentUserAnswerPosition === matchAnswerPosition
-   //                         ) {
-   //                            matchScore = matchScore + 10;
-   //                         } else if (
-   //                            (currentUserAnswerPosition === 1 &&
-   //                               matchAnswerPosition === 4) ||
-   //                            (currentUserAnswerPosition === 4 &&
-   //                               matchAnswerPosition === 1)
-   //                         ) {
-   //                            matchScore = matchScore - 10;
-   //                         }
-   //                         match.score = matchScore;
-   //                         return match;
-   //                      }
-   //                   });
-   //                   console.log(
-   //                      "Here are the matches with match scores: ",
-   //                      matchesWithMatchScores
-   //                   );
-   //                }
-   //             }
-   //          );
-   //       })
-   //       .catch((error) => {
-   //          // handle error
-   //       });
-   // }
 
    logOutCurrentUser() {
       this.props.dispatch({
@@ -172,11 +89,11 @@ class Matches extends React.Component {
                      </div>
                   </div>
                   <div className="row">
-                     {this.props.matches.map((individualmatch) => {
+                     {this.props.matches.map((individualMatch) => {
                         return (
                            <MatchPreview
-                              match={individualmatch}
-                              key={individualmatch.userId}
+                              match={individualMatch}
+                              key={individualMatch.userId}
                            />
                         );
                      })}

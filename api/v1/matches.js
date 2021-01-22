@@ -30,7 +30,8 @@ router.get("/", validateJwt, async (req, res) => {
    });
    const scoresForAllMatches = matches.map((match) => {
       const matchScores = match.questions.map((matchQuestion) => {
-         if (matchQuestion.questionType === 3) {
+         if (matchQuestion.selectedAnswerIds.length === 0) {
+         } else if (matchQuestion.questionType === 3) {
             console.log("Match first name: ", match.firstName);
             console.log("Match question id: ", matchQuestion.questionId);
             const matchMatchingAnswerChoice = matchQuestion.answerChoices.filter(
